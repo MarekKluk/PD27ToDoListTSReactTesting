@@ -1,0 +1,39 @@
+.app-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+.input-and-button-wrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.add-task-button {
+    cursor: pointer;
+}
+
+.move-right-button {
+    float: right
+}
+.delete-button {
+    margin-left: 100px;
+}
+
+.column-container {
+    display: flex;
+    flex-direction: row;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 350px;
+    border: 1px solid;
+}
+.task {
+    margin-top: 10px;
+    width: 300px;
+    border: 1px dotted;
+}
