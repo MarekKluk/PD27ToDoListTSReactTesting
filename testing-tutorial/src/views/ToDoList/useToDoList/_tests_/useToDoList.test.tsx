@@ -31,37 +31,40 @@ vi.mock('../../../../shared/Api/deleteTaskApi', () => {
 });
 
 describe('The UseToDoList hook', () => {
-  const task1 = {
-    "userId": 1,
-    "id": 1,
-    "title": "delectus aut autem",
-    "completed": true
-  }
-  const task2 = {
-    "userId": 1,
-    "id": 2,
-    "title": "quis ut nam facilis et officia qui",
-    "completed": false
-  }
-  const task3 = {
-    "userId": 1,
-    "id": 3,
-    "title": "fugiat veniam minus",
-    "completed": false
-  }
-  const task4 = {
-    "userId": 1,
-    "id": 4,
-    "title": "qui ullam ratione quibusdam voluptatem quia omnis",
-    "completed": true
-  }
-  const returnedToDoList = [task1, task2, task3, task4]
+  let task1: Task
+  let task2: Task
+  let task3: Task
+  let task4: Task
+  let returnedToDoList: Task[]
 
   beforeEach(() => {
+    task1 = {
+      "userId": 1,
+      "id": 1,
+      "title": "delectus aut autem",
+      "completed": true
+    }
+    task2 = {
+      "userId": 1,
+      "id": 2,
+      "title": "quis ut nam facilis et officia qui",
+      "completed": false
+    }
+    task3 = {
+      "userId": 1,
+      "id": 3,
+      "title": "fugiat veniam minus",
+      "completed": false
+    }
+    task4 = {
+      "userId": 1,
+      "id": 4,
+      "title": "qui ullam ratione quibusdam voluptatem quia omnis",
+      "completed": true
+    }
+    returnedToDoList = [task1, task2, task3, task4]
+    vi.clearAllMocks();
     (fetchToDosApi as Mock).mockResolvedValue(returnedToDoList);
-  })
-  afterEach(() => {
-    vi.clearAllMocks()
   })
 
   test('should not crash when called', () => {
@@ -69,6 +72,7 @@ describe('The UseToDoList hook', () => {
       renderHook(() => useToDoList(), {wrapper: TestWrapper})
     }).not.Throw;
   })
+
   describe('The handleAddTaskButton function', () => {
     const taskMock: Task = {
       "userId": 1,
@@ -84,6 +88,7 @@ describe('The UseToDoList hook', () => {
       expect(postTask).toBeCalledWith(taskMock)
    	})
   })
+
   describe('The splitListByStatusAndFindBiggestId function', () => {
     test('should correctly split taskList to finished and toDo lists', async () => {
       const { result } = renderHook(() => useToDoList(), {wrapper: TestWrapper})
@@ -92,8 +97,8 @@ describe('The UseToDoList hook', () => {
       expect(finished).toEqual([task1, task4])
     })
   })
+
   describe('The moveTakToToDosList function', () => {
-    const mockedTaskToTest = task1
     const resolvedMockedTask = {
       "userId": 1,
       "id": 1,
@@ -103,14 +108,14 @@ describe('The UseToDoList hook', () => {
     test('should move task from finished list to toDo list', async() => {
       (modifyTask as Mock).mockResolvedValue(resolvedMockedTask)
       const { result } = renderHook(() => useToDoList(), {wrapper: TestWrapper})
-      await waitFor(() => result.current.moveTaskToToDosList(mockedTaskToTest))
+      await waitFor(() => result.current.moveTaskToToDosList(task1))
       expect(result.current.todoList).toEqual([task1, task2, task3]);
       expect(result.current.finishedList).toEqual([task4]);
-      expect(mockedTaskToTest.completed).toBe(false);
+      expect(task1.completed).toBe(false);
     })
   })
+
   describe('moveTaskToFinishedList function', () => {
-    const mockedTaskToTest = task2
     const resolvedMockedTask = {
       "userId": 1,
       "id": 2,
@@ -120,10 +125,10 @@ describe('The UseToDoList hook', () => {
     test('should move task from toDo list to finished list', async() => {
       (modifyTask as Mock).mockResolvedValue(resolvedMockedTask)
       const { result } = renderHook(() => useToDoList(), {wrapper: TestWrapper})
-      await waitFor(() => result.current.moveTaskToFinishedList(mockedTaskToTest))
+      await waitFor(() => result.current.moveTaskToFinishedList(task2))
       expect(result.current.todoList).toEqual([task3]);
       expect(result.current.finishedList).toEqual([task1, task2, task4]);
-      expect(mockedTaskToTest.completed).toBe(true);
+      expect(task2.completed).toBe(true);
     })
   })
 })
