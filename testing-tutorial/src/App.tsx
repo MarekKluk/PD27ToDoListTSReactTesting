@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Home } from "./views/Home";
 import { Layout } from "./shared/Layout";
 import { ThemeProvider } from "@mui/material";
-import theme from "./utils";
+import theme from "./utils/theme";
 
 function App() {
 
