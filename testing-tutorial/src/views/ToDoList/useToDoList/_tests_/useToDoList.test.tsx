@@ -24,12 +24,6 @@ vi.mock('../../../../shared/Api/modifyTask', () => {
   };
 });
 
-vi.mock('../../../../shared/Api/deleteTaskApi', () => {
-  return {
-    deleteTaskApi: vi.fn()
-  };
-});
-
 describe('The UseToDoList hook', () => {
   let task1: Task
   let task2: Task
